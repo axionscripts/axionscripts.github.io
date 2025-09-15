@@ -43,8 +43,231 @@
                         </button>
                     </div>
                     <div class="code-block" id="main-config">
-                        <pre><code>-- Paste your complete config.lua content here
--- This will be replaced with the actual configuration file content</code></pre>
+                        <pre><code>Config = {}
+
+                            -- Framework Configuration
+                            Config.Framework = "esx" -- "esx" or "qb-core"
+                            
+                            -- General Settings
+                            Config.Debug = true
+                            Config.Locale = "en"
+                            
+                            -- Shop Spawning Configuration
+                            Config.ShopLocations = {
+                                {
+                                    coords = vector3(-1037.0, -2737.0, 20.2),
+                                    heading = 240.0,
+                                    name = "Airport Terminal",
+                                    blip = {
+                                        sprite = 52,
+                                        color = 1,
+                                        scale = 0.8,
+                                        name = "Black Market"
+                                    }
+                                },
+                                {
+                                    coords = vector3(1274.0, -1720.0, 54.7),
+                                    heading = 120.0,
+                                    name = "Industrial Area",
+                                    blip = {
+                                        sprite = 52,
+                                        color = 1,
+                                        scale = 0.8,
+                                        name = "Black Market"
+                                    }
+                                },
+                                {
+                                    coords = vector3(-1155.0, -1425.0, 4.9),
+                                    heading = 35.0,
+                                    name = "Docks",
+                                    blip = {
+                                        sprite = 52,
+                                        color = 1,
+                                        scale = 0.8,
+                                        name = "Black Market"
+                                    }
+                                },
+                                {
+                                    coords = vector3(2433.0, 4968.0, 42.3),
+                                    heading = 45.0,
+                                    name = "Grapeseed",
+                                    blip = {
+                                        sprite = 52,
+                                        color = 1,
+                                        scale = 0.8,
+                                        name = "Black Market"
+                                    }
+                                },
+                                {
+                                    coords = vector3(1392.0, 4378.0, 44.3),
+                                    heading = 90.0,
+                                    name = "Sandy Shores",
+                                    blip = {
+                                        sprite = 52,
+                                        color = 1,
+                                        scale = 0.8,
+                                        name = "Black Market"
+                                    }
+                                }
+                            }
+                            
+                            -- Timing Configuration
+                            Config.Timing = {
+                                mode = "always", -- "duration", "schedule", or "always"
+                                duration_minutes = 60, -- For duration mode (in minutes)
+                                schedule = {
+                                    start_hour =19, -- 8 PM (24-hour format)
+                                    end_hour = 22,   -- 10 PM (24-hour format)
+                                    days = {1,2,3,4,5,6,7} -- Days of week (1=Monday, 7=Sunday)
+                                },
+                                cooldown_minutes = 0, -- Cooldown between shop spawns
+                                always = {
+                                    respawn_interval = 300 -- Respawn interval in seconds when shop despawns (5 minutes)
+                                }
+                            }
+                            
+                            -- Shop Configuration
+                            Config.Shop = {
+                                combined_shop = {
+                                    enabled = true, -- Set to true to combine all shops into one NPC
+                                    name = "Black Market Dealer",
+                                    model = "s_m_y_dealer_01",
+                                    price_multiplier = 1.0 -- Default price multiplier for combined shop
+                                }
+                            }
+                            
+                            -- Stock Management Configuration
+                            Config.Stock = {
+                                mode = "server_wide", -- "per_player" or "server_wide"
+                                refresh_interval = 300, -- How often to refresh stock (in seconds, 0 = never)
+                                default_stock = {
+                                    unlimited = false, -- Set to true to make all items unlimited by default
+                                    fixed_amount = 10, -- Default fixed stock amount
+                                    random_range = {min = 1, max = 5} -- Default random stock range
+                                }
+                            }
+                            
+                            -- Shop Types Configuration
+                            Config.ShopTypes = {
+                                ["weapons"] = {
+                                    name = "Weapon Dealer",
+                                    model = "s_m_y_dealer_01",
+                                    items = "weapon_items",
+                                    payment_type = "black_money", -- "clean_money" or "black_money"
+                                    price_multiplier = 1.0,
+                                    randomized = false, -- true for random items, false for fixed list
+                                    max_items = 4 -- Maximum items when randomized
+                                },
+                                ["ammo"] = {
+                                    name = "Ammunition Dealer",
+                                    model = "s_m_y_dealer_01",
+                                    items = "ammo_items",
+                                    payment_type = "black_money",
+                                    price_multiplier = 1.0,
+                                    randomized = false,
+                                    max_items = 5
+                                },
+                                ["drugs"] = {
+                                    name = "Drug Dealer",
+                                    model = "s_m_y_dealer_01",
+                                    items = "drug_items",
+                                    payment_type = "black_money",
+                                    price_multiplier = 1.2,
+                                    randomized = true,
+                                    max_items = 8
+                                },
+                                ["illegal_goods"] = {
+                                    name = "Illegal Goods Dealer",
+                                    model = "s_m_y_dealer_01",
+                                    items = "illegal_items",
+                                    payment_type = "clean_money",
+                                    price_multiplier = 0.8,
+                                    randomized = false,
+                                    max_items = 12
+                                }
+                            }
+                            
+                            -- Payment Configuration
+                            Config.Payment = {
+                                clean_money = {
+                                    cash_item = "money", -- Cash item name
+                                    use_accounts = true -- true to use ESX/QB accounts, false to use items
+                                },
+                                black_money = {
+                                    item = "black_money", -- Black money item name
+                                    use_accounts = false -- true to use ESX/QB black money account
+                                }
+                            }
+                            
+                            -- UI Configuration
+                            Config.UI = {
+                                position = "center", -- "center", "top", "bottom"
+                                theme = "dark", -- "dark" or "light"
+                                animations = true,
+                                sound_effects = true
+                            }
+                            
+                            -- Security Configuration
+                            Config.Security = {
+                                max_distance = 5.0, -- Maximum distance from NPC to interact
+                                cooldown_seconds = 2, -- Cooldown between purchases
+                                max_purchases_per_session = 50, -- Maximum purchases per shop session
+                                log_transactions = true
+                            }
+                            
+                            -- Notification Configuration
+                            Config.Notifications = {
+                                enabled = true, -- Set to false to disable all black market notifications
+                                type = "ox_lib", -- "ox_lib", "esx", "qb", "custom"
+                                position = "top-right",
+                                duration = 5000,
+                                shop_spawn_notifications = true, -- Notify when shops spawn/despawn
+                                purchase_notifications = true -- Notify when purchases are made
+                            }
+                            
+                            -- Blip Configuration
+                            Config.Blips = {
+                                enabled = true,
+                                show_when_active = true,
+                                hide_when_inactive = true,
+                                show_on_map = true, -- Show blip on map for all players (can be disabled)
+                                sprite = 52,
+                                color = 1,
+                                scale = 0.8,
+                                name = "Black Market",
+                                flash = false, -- Make blip flash
+                                short_range = true -- Only show when close to blip
+                            }
+                            
+                            
+                            -- Logging Configuration
+                            Config.Logging = {
+                                enabled = true,
+                                webhook_url = "", -- Discord webhook URL for logging
+                                log_level = "info", -- "debug", "info", "warn", "error"
+                                log_file = "blackmarket.log"
+                            }
+                            
+                            -- Performance Configuration
+                            Config.Performance = {
+                                max_shops_active = 3, -- Maximum number of shops active at once
+                                cleanup_interval = 300, -- Cleanup interval in seconds
+                                memory_optimization = true
+                            }
+                            
+                            -- Language Configuration
+                            -- Languages are now loaded from separate files in data/languages/
+                            -- To add a new language, create a new file like data/languages/your_language.lua
+                            -- and follow the same structure as the existing language files
+                            Config.Languages = {} -- This will be populated by the language files
+                            
+                            -- Debug Configuration
+                            Config.DebugSettings = {
+                                show_coords = true,
+                                show_shop_info = true,
+                                verbose_logging = true,
+                                test_mode = true
+                            }</code></pre>
                     </div>
                 </div>
             </div>

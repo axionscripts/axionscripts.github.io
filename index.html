@@ -4,13 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Axion FiveM Scripts Documentation</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar will be loaded here -->
-    <div id="navbar-container"></div>
+    <div id="navbar-container">
+        <!-- Fallback navbar in case component loading fails -->
+        <nav class="navbar" id="fallback-navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-code"></i>
+                    <span>Axion Scripts</span>
+                </div>
+                <div class="nav-menu" id="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Axion Black Market <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="blackmarket/installation.html" class="dropdown-link">Installation</a>
+                            <a href="blackmarket/usage.html" class="dropdown-link">Usage</a>
+                            <a href="blackmarket/config.html" class="dropdown-link">Config</a>
+                            <a href="blackmarket/client.html" class="dropdown-link">Client</a>
+                            <a href="blackmarket/server.html" class="dropdown-link">Server</a>
+                            <a href="blackmarket/faq.html" class="dropdown-link">FAQ</a>
+                        </div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Axion Notify <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="notify/installation.html" class="dropdown-link">Installation</a>
+                            <a href="notify/usage.html" class="dropdown-link">Usage</a>
+                            <a href="notify/config.html" class="dropdown-link">Config</a>
+                            <a href="notify/client.html" class="dropdown-link">Client</a>
+                            <a href="notify/server.html" class="dropdown-link">Server</a>
+                            <a href="notify/faq.html" class="dropdown-link">FAQ</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-toggle" id="nav-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -247,7 +287,75 @@
     <div id="footer-container"></div>
 
     <!-- Load component system -->
-    <script src="components/component-loader.js"></script>
-    <script src="script.js"></script>
+    <script src="components/component-loader.js?v=2.0"></script>
+    <script src="script.js?v=2.0"></script>
+    
+    <!-- Mobile navbar initialization -->
+    <script>
+        // Initialize mobile navbar with multiple attempts
+        function initializeMobileNavbar() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            
+            if (navToggle && navMenu) {
+                // Remove any existing event listeners
+                navToggle.onclick = null;
+                
+                // Add new event listener
+                navToggle.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                    document.body.classList.toggle('nav-open');
+                    
+                    return false;
+                };
+                
+                // Add touch event for better mobile support
+                navToggle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                    document.body.classList.toggle('nav-open');
+                });
+                
+                // Close menu when clicking on links
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                        document.body.classList.remove('nav-open');
+                    });
+                });
+                
+                return true;
+            }
+            return false;
+        }
+        
+        // Try multiple times to ensure it works
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try immediately
+            if (!initializeMobileNavbar()) {
+                // Try again after a short delay
+                setTimeout(() => {
+                    if (!initializeMobileNavbar()) {
+                        // Try one more time
+                        setTimeout(() => {
+                            initializeMobileNavbar();
+                        }, 500);
+                    }
+                }, 100);
+            }
+        });
+        
+        // Also try when window loads
+        window.addEventListener('load', function() {
+            initializeMobileNavbar();
+        });
+    </script>
 </body>
 </html>

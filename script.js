@@ -2,13 +2,32 @@
 // Modern, interactive features for the documentation website
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all features
-    initNavigation();
-    initFAQ();
-    initSearch();
-    initAnimations();
-    initCodeBlocks();
-    initScrollEffects();
+    // Check if we're using component system
+    const isComponentSystem = document.getElementById('navbar-container');
+    
+    if (isComponentSystem) {
+        // Wait for components to load, then initialize
+        setTimeout(() => {
+            initNavigation();
+            initFAQ();
+            initSearch();
+            initAnimations();
+            initCodeBlocks();
+            initScrollEffects();
+            initMobileOptimizations();
+            initSyntaxHighlighting();
+        }, 100);
+    } else {
+        // Initialize immediately for non-component pages
+        initNavigation();
+        initFAQ();
+        initSearch();
+        initAnimations();
+        initCodeBlocks();
+        initScrollEffects();
+        initMobileOptimizations();
+        initSyntaxHighlighting();
+    }
 });
 
 // Navigation functionality
@@ -16,6 +35,15 @@ function initNavigation() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+
+    // Check if we're using component system
+    const isComponentSystem = document.getElementById('navbar-container');
+    
+    // Only initialize if not using component system or if components are already loaded
+    if (isComponentSystem && !navToggle) {
+        // Components will be loaded later, skip initialization
+        return;
+    }
 
     // Mobile menu toggle
     if (navToggle && navMenu) {
@@ -501,6 +529,247 @@ if ('performance' in window) {
             console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
         }, 0);
     });
+}
+
+// Mobile optimizations
+function initMobileOptimizations() {
+    // Detect mobile devices
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isMobile || isTouchDevice) {
+        document.body.classList.add('mobile-device');
+    }
+
+    // Prevent zoom on input focus (iOS Safari)
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            if (isMobile) {
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                }
+            }
+        });
+
+        input.addEventListener('blur', function() {
+            if (isMobile) {
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                }
+            }
+        });
+    });
+
+    // Improve touch scrolling
+    if (isTouchDevice) {
+        document.body.style.webkitOverflowScrolling = 'touch';
+    }
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            // Recalculate heights after orientation change
+            const navMenu = document.getElementById('nav-menu');
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.style.height = 'calc(100vh - 70px)';
+            }
+        }, 100);
+    });
+
+    // Close mobile menu when scrolling
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        const navMenu = document.getElementById('nav-menu');
+        const navToggle = document.getElementById('nav-toggle');
+        
+        if (navMenu && navMenu.classList.contains('active')) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                document.body.classList.remove('nav-open');
+            }, 150);
+        }
+    });
+
+    // Improve dropdown behavior on mobile
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('touchstart', function(e) {
+            if (isMobile) {
+                e.preventDefault();
+                const dropdown = this.parentElement;
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                } else {
+                    // Close other dropdowns
+                    dropdownToggles.forEach(otherToggle => {
+                        if (otherToggle !== this) {
+                            const otherDropdown = otherToggle.parentElement;
+                            const otherMenu = otherDropdown.querySelector('.dropdown-menu');
+                            otherMenu.style.display = 'none';
+                        }
+                    });
+                    menu.style.display = 'block';
+                }
+            }
+        });
+    });
+
+    // Add touch feedback for buttons
+    const buttons = document.querySelectorAll('.btn, .copy-btn, .faq-question');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+
+        button.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
+    });
+}
+
+// Lua Syntax Highlighting
+function initSyntaxHighlighting() {
+    const codeBlocks = document.querySelectorAll('.code-block pre code');
+    
+    codeBlocks.forEach(block => {
+        // Check if this looks like Lua code
+        const text = block.textContent;
+        if (text.includes('Config') || text.includes('function') || text.includes('local') || text.includes('--')) {
+            highlightLuaCode(block);
+        }
+    });
+}
+
+function highlightLuaCode(element) {
+    const text = element.textContent;
+    const parent = element.parentElement;
+    const grandParent = parent.parentElement;
+    
+    // Add lua class to the code block
+    grandParent.classList.add('lua');
+    
+    // Lua keywords
+    const keywords = [
+        'and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if',
+        'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while'
+    ];
+    
+    // Lua functions and built-ins
+    const functions = [
+        'print', 'type', 'tostring', 'tonumber', 'pairs', 'ipairs', 'next', 'getmetatable',
+        'setmetatable', 'rawget', 'rawset', 'rawequal', 'pcall', 'xpcall', 'error', 'assert'
+    ];
+    
+    let highlightedText = text;
+    
+    // Process in order of specificity to avoid nesting issues
+    
+    // 1. First, protect already highlighted content by replacing spans with placeholders
+    const spanPlaceholders = [];
+    let spanIndex = 0;
+    
+    // 2. Highlight comments first (they're line-based and won't conflict)
+    highlightedText = highlightedText.replace(/--.*$/gm, (match) => {
+        const placeholder = `__COMMENT_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-comment">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 3. Highlight strings (protect them from other processing)
+    highlightedText = highlightedText.replace(/(["'])((?:\\.|(?!\1)[^\\])*?)\1/g, (match) => {
+        const placeholder = `__STRING_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-string">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 4. Highlight numbers
+    highlightedText = highlightedText.replace(/\b\d+\.?\d*\b/g, (match) => {
+        const placeholder = `__NUMBER_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-number">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 5. Highlight boolean values
+    highlightedText = highlightedText.replace(/\b(true|false)\b/g, (match) => {
+        const placeholder = `__BOOLEAN_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-boolean">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 6. Highlight Config patterns
+    highlightedText = highlightedText.replace(/\bConfig\b/g, (match) => {
+        const placeholder = `__CONFIG_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-table">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 7. Highlight keywords
+    keywords.forEach(keyword => {
+        const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+        highlightedText = highlightedText.replace(regex, (match) => {
+            const placeholder = `__KEYWORD_${spanIndex++}__`;
+            spanPlaceholders.push({ placeholder, replacement: `<span class="lua-keyword">${match}</span>` });
+            return placeholder;
+        });
+    });
+    
+    // 8. Highlight functions
+    functions.forEach(func => {
+        const regex = new RegExp(`\\b${func}\\b`, 'g');
+        highlightedText = highlightedText.replace(regex, (match) => {
+            const placeholder = `__FUNCTION_${spanIndex++}__`;
+            spanPlaceholders.push({ placeholder, replacement: `<span class="lua-function">${match}</span>` });
+            return placeholder;
+        });
+    });
+    
+    // 9. Highlight operators (but avoid conflicts with already highlighted content)
+    highlightedText = highlightedText.replace(/([=+\-*/%<>~!&|]+)/g, (match) => {
+        // Only highlight if not already part of a placeholder
+        if (!match.includes('__') && !match.includes('_')) {
+            const placeholder = `__OPERATOR_${spanIndex++}__`;
+            spanPlaceholders.push({ placeholder, replacement: `<span class="lua-operator">${match}</span>` });
+            return placeholder;
+        }
+        return match;
+    });
+    
+    // 10. Highlight punctuation
+    highlightedText = highlightedText.replace(/([{}[\]();,])/g, (match) => {
+        const placeholder = `__PUNCTUATION_${spanIndex++}__`;
+        spanPlaceholders.push({ placeholder, replacement: `<span class="lua-punctuation">${match}</span>` });
+        return placeholder;
+    });
+    
+    // 11. Highlight table access patterns (but avoid conflicts)
+    highlightedText = highlightedText.replace(/(\w+)\.(\w+)/g, (match, var1, var2) => {
+        // Only if not already highlighted
+        if (!match.includes('__')) {
+            const placeholder = `__TABLE_ACCESS_${spanIndex++}__`;
+            spanPlaceholders.push({ 
+                placeholder, 
+                replacement: `<span class="lua-variable">${var1}</span><span class="lua-punctuation">.</span><span class="lua-variable">${var2}</span>` 
+            });
+            return placeholder;
+        }
+        return match;
+    });
+    
+    // 12. Restore all placeholders with their HTML
+    spanPlaceholders.forEach(({ placeholder, replacement }) => {
+        highlightedText = highlightedText.replace(new RegExp(placeholder, 'g'), replacement);
+    });
+    
+    element.innerHTML = highlightedText;
 }
 
 // Service Worker registration (for PWA features)

@@ -109,24 +109,22 @@ class ComponentLoader {
      * @param {string} targetSelector - CSS selector for where to insert the component
      */
     async loadComponent(componentName, filePath, targetSelector) {
-        try {
-            // Try to fetch from file first
-            const response = await fetch(filePath);
-            if (!response.ok) {
-                throw new Error(`Failed to load ${componentName}: ${response.status}`);
-            }
-            
-            const html = await response.text();
-            this.insertComponent(componentName, html, targetSelector);
-        } catch (error) {
-            console.warn(`Failed to load ${componentName} from file, using embedded version:`, error.message);
-            
-            // Use embedded component as fallback
-            const embeddedHtml = EMBEDDED_COMPONENTS[componentName];
-            if (embeddedHtml) {
-                this.insertComponent(componentName, embeddedHtml, targetSelector);
-            } else {
-                console.error(`No embedded component found for: ${componentName}`);
+        // Always use embedded components for now to ensure they work
+        const embeddedHtml = EMBEDDED_COMPONENTS[componentName];
+        if (embeddedHtml) {
+            this.insertComponent(componentName, embeddedHtml, targetSelector);
+        } else {
+            // Fallback to file loading
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${componentName}: ${response.status}`);
+                }
+                
+                const html = await response.text();
+                this.insertComponent(componentName, html, targetSelector);
+            } catch (error) {
+                console.error(`Failed to load ${componentName} from file:`, error.message);
             }
         }
     }
@@ -141,11 +139,52 @@ class ComponentLoader {
             targetElement.innerHTML = html;
             this.components.set(componentName, html);
             
+            // Special handling for navbar component
+            if (componentName === 'navbar') {
+                this.setupMobileNavbar();
+            }
+            
             // Re-initialize any JavaScript functionality after loading
             this.initializeComponents();
         } else {
-            console.warn(`Target element not found: ${targetSelector}`);
+            console.error(`Target element not found: ${targetSelector}`);
         }
+    }
+
+    /**
+     * Setup mobile navbar with direct event handling
+     */
+    setupMobileNavbar() {
+        setTimeout(() => {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            
+            if (navToggle && navMenu) {
+                // Remove any existing event listeners
+                navToggle.onclick = null;
+                
+                // Add new event listener
+                navToggle.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Toggle classes
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                    document.body.classList.toggle('nav-open');
+                    
+                    return false;
+                };
+                
+                // Add touch event for better mobile support
+                navToggle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                    document.body.classList.toggle('nav-open');
+                });
+            }
+        }, 100);
     }
 
     /**
@@ -160,44 +199,44 @@ class ComponentLoader {
      * Initialize navigation dropdowns and mobile menu
      */
     initializeNavigation() {
-        // Mobile menu toggle
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                navToggle.classList.toggle('active');
-            });
-        }
+        // Wait a bit for DOM to be fully ready
+        setTimeout(() => {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            if (navToggle && navMenu) {
+                // Use onclick for more reliable mobile support
+                navToggle.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                    document.body.classList.toggle('nav-open');
+                    
+                    return false;
+                };
 
-        // Dropdown functionality
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                const dropdown = toggle.nextElementSibling;
-                
-                // Close other dropdowns
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    if (menu !== dropdown) {
-                        menu.classList.remove('active');
+                // Close menu when clicking on a link
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                        document.body.classList.remove('nav-open');
+                    });
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                        document.body.classList.remove('nav-open');
                     }
                 });
-                
-                // Toggle current dropdown
-                dropdown.classList.toggle('active');
-            });
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-dropdown')) {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.classList.remove('active');
-                });
             }
-        });
+        }, 50);
     }
 
     /**
@@ -251,15 +290,53 @@ class ComponentLoader {
         }
         
         // Load navbar
-        await this.loadComponent('navbar', `${pathPrefix}components/navbar.html`, '#navbar-container');
+        try {
+            await this.loadComponent('navbar', `${pathPrefix}components/navbar.html`, '#navbar-container');
+        } catch (error) {
+            console.error('Failed to load navbar, showing fallback:', error);
+            this.showFallbackNavbar();
+        }
         
         // Load footer
-        await this.loadComponent('footer', `${pathPrefix}components/footer.html`, '#footer-container');
+        try {
+            await this.loadComponent('footer', `${pathPrefix}components/footer.html`, '#footer-container');
+        } catch (error) {
+            console.error('Failed to load footer:', error);
+        }
         
         // Set active navigation after components are loaded
         setTimeout(() => {
             this.setActiveNavigation();
+            // Ensure mobile navigation is properly initialized
+            this.ensureMobileNavigation();
         }, 100);
+    }
+
+    /**
+     * Show fallback navbar if component loading fails
+     */
+    showFallbackNavbar() {
+        const fallbackNavbar = document.getElementById('fallback-navbar');
+        if (fallbackNavbar) {
+            fallbackNavbar.style.display = 'block';
+        }
+    }
+
+    /**
+     * Ensure mobile navigation is properly set up
+     */
+    ensureMobileNavigation() {
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        
+        if (navToggle && navMenu) {
+            // Double-check that event listeners are properly attached
+            const hasClickListener = navToggle.onclick !== null;
+            
+            if (!hasClickListener) {
+                this.initializeNavigation();
+            }
+        }
     }
 
     /**
@@ -277,5 +354,19 @@ class ComponentLoader {
 // Initialize component loader when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const loader = new ComponentLoader();
-    loader.loadAllComponents();
+    
+    // Set a timeout to show fallback navbar if loading takes too long
+    const fallbackTimeout = setTimeout(() => {
+        const navbarContainer = document.getElementById('navbar-container');
+        if (navbarContainer && navbarContainer.innerHTML.trim() === '') {
+            loader.showFallbackNavbar();
+        }
+    }, 1000);
+    
+    loader.loadAllComponents().then(() => {
+        clearTimeout(fallbackTimeout);
+    }).catch((error) => {
+        console.error('Error loading components:', error);
+        loader.showFallbackNavbar();
+    });
 });

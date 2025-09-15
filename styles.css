@@ -1,4 +1,29 @@
+/* Axion Scripts Documentation - Modern Dark Theme CSS v2.0 */
 /* Reset and Base Styles */
+
+/* Lua Syntax Highlighting */
+.code-block.lua {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+.code-block.lua pre {
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.5;
+}
+
+/* Lua Keywords */
+.lua-keyword { color: #569cd6; font-weight: bold; }
+.lua-string { color: #ce9178; }
+.lua-comment { color: #6a9955; font-style: italic; }
+.lua-number { color: #b5cea8; }
+.lua-function { color: #dcdcaa; }
+.lua-variable { color: #9cdcfe; }
+.lua-operator { color: #d4d4d4; }
+.lua-punctuation { color: #d4d4d4; }
+.lua-table { color: #4ec9b0; }
+.lua-boolean { color: #569cd6; }
 * {
     margin: 0;
     padding: 0;
@@ -230,17 +255,26 @@ body {
 .nav-toggle {
     display: none;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
-    gap: 4px;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-.bar {
-    width: 25px;
+.nav-toggle .bar {
+    width: 24px;
     height: 3px;
-    background: var(--text-secondary);
-    border-radius: var(--radius-full);
-    transition: var(--transition-fast);
+    background-color: var(--text-primary);
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
 }
+
+/* Bar styles are now defined in .nav-toggle .bar above */
 
 /* Hero Section */
 .hero {
@@ -1078,6 +1112,7 @@ body {
     padding: var(--spacing-6);
     box-shadow: var(--shadow-md);
     border: 1px solid var(--bg-tertiary);
+    margin-bottom: var(--spacing-4);
 }
 
 .tip-icon {
@@ -1346,7 +1381,8 @@ body {
 
 /* File Structure */
 .file-structure {
-    background: var(--gray-100);
+    background: var(--bg-card);
+    border: 1px solid var(--bg-tertiary);
     border-radius: var(--radius-lg);
     padding: var(--spacing-4);
     margin: var(--spacing-4) 0;
@@ -1538,7 +1574,48 @@ body {
 }
 
 /* Responsive Design */
+
+/* Tablet and small desktop */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 var(--spacing-6);
+    }
+
+    .hero-container {
+        gap: var(--spacing-6);
+    }
+
+    .features-grid,
+    .scripts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-4);
+    }
+
+    .prerequisites-grid,
+    .config-grid,
+    .post-installation-grid,
+    .troubleshooting-grid,
+    .commands-grid,
+    .performance-tips,
+    .best-practices,
+    .support-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-4);
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-6);
+    }
+}
+
+/* Mobile and tablet */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 var(--spacing-4);
+    }
+
+    /* Navigation */
     .nav-menu {
         position: fixed;
         top: 70px;
@@ -1552,14 +1629,45 @@ body {
         padding-top: var(--spacing-8);
         transition: var(--transition-normal);
         box-shadow: var(--shadow-lg);
+        z-index: 1000;
     }
 
     .nav-menu.active {
-        left: 0;
+        left: 0 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .nav-toggle {
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+
+    .nav-toggle:hover {
+        background-color: var(--bg-hover);
+    }
+
+    .nav-toggle:active {
+        background-color: var(--primary-color);
+        transform: scale(0.95);
+    }
+
+    .nav-toggle .bar {
+        width: 24px;
+        height: 3px;
+        background-color: var(--text-primary);
+        margin: 2px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
     }
 
     .nav-toggle.active .bar:nth-child(1) {
@@ -1574,29 +1682,68 @@ body {
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
+    /* Hero section */
+    .hero {
+        padding: var(--spacing-12) 0 var(--spacing-8);
+    }
+
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: var(--spacing-8);
+        gap: var(--spacing-6);
     }
 
     .hero-content h1 {
         font-size: var(--font-size-4xl);
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: var(--font-size-lg);
     }
 
     .hero-buttons {
         justify-content: center;
         flex-wrap: wrap;
+        gap: var(--spacing-3);
     }
 
+    .hero-buttons .btn {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    /* Page headers */
+    .page-header {
+        padding: var(--spacing-12) 0 var(--spacing-6);
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-4xl);
+    }
+
+    .breadcrumb {
+        justify-content: center;
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Grid layouts */
     .features-grid,
     .scripts-grid,
     .quick-start-steps {
         grid-template-columns: 1fr;
+        gap: var(--spacing-4);
     }
 
     .script-actions {
         flex-direction: column;
+        gap: var(--spacing-3);
+    }
+
+    .script-actions .btn {
+        width: 100%;
+        justify-content: center;
     }
 
     .prerequisites-grid,
@@ -1608,11 +1755,82 @@ body {
     .best-practices,
     .support-options {
         grid-template-columns: 1fr;
+        gap: var(--spacing-4);
     }
 
+    /* Cards and content */
+    .feature-card,
+    .script-overview-card,
+    .step-card,
+    .prerequisite-card,
+    .config-card,
+    .post-install-card,
+    .troubleshoot-card,
+    .usage-step,
+    .command-card,
+    .api-example,
+    .integration-example,
+    .tip-card,
+    .practice-card,
+    .faq-item,
+    .code-example,
+    .debug-section,
+    .support-card {
+        padding: var(--spacing-4);
+    }
+
+    /* Purchase notice */
+    .purchase-notice {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-4);
+        gap: var(--spacing-3);
+    }
+
+    .purchase-notice i {
+        font-size: var(--font-size-2xl);
+    }
+
+    .purchase-notice h4 {
+        font-size: var(--font-size-lg);
+    }
+
+    /* Code blocks */
+    .code-block {
+        padding: var(--spacing-3);
+        overflow-x: auto;
+    }
+
+    .code-block pre {
+        font-size: var(--font-size-sm);
+        line-height: 1.4;
+    }
+
+    /* Config box */
+    .config-box {
+        margin: var(--spacing-4) 0;
+    }
+
+    .config-header {
+        padding: var(--spacing-3);
+        flex-direction: column;
+        gap: var(--spacing-2);
+        text-align: center;
+    }
+
+    .copy-btn {
+        align-self: center;
+    }
+
+    /* Footer */
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: var(--spacing-6);
+    }
+
+    .footer-section {
+        margin-bottom: var(--spacing-4);
     }
 
     .social-links {
@@ -1650,27 +1868,142 @@ body {
     .dropdown-link:last-child {
         border-bottom: none;
     }
+
+    /* Search functionality */
+    .search-box {
+        width: 100%;
+        margin: var(--spacing-4) 0;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: var(--spacing-3);
+    }
+
+    /* Section spacing */
+    .section {
+        padding: var(--spacing-8) 0;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: var(--spacing-6);
+    }
+
+    .section-header h2 {
+        font-size: var(--font-size-2xl);
+    }
+
+    /* Step headers and content */
+    .step-header h3 {
+        font-size: var(--font-size-lg) !important;
+        line-height: 1.3 !important;
+        margin-bottom: var(--spacing-2) !important;
+    }
+
+    .step-content p {
+        font-size: var(--font-size-sm) !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Purchase notice mobile optimization */
+    .purchase-notice h4 {
+        font-size: var(--font-size-lg) !important;
+        line-height: 1.3 !important;
+    }
+
+    .purchase-notice p {
+        font-size: var(--font-size-sm) !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Installation step cards */
+    .step-card {
+        margin-bottom: var(--spacing-4);
+        padding: var(--spacing-4);
+    }
+
+    .step-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-2);
+        margin-bottom: var(--spacing-3);
+    }
+
+    .step-number {
+        align-self: center;
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-lg);
+    }
+
+    .step-content {
+        padding: 0;
+    }
+
+    .step-content p {
+        font-size: var(--font-size-sm) !important;
+        line-height: 1.5 !important;
+        margin-bottom: var(--spacing-3);
+    }
+
+    /* Installation steps container */
+    .installation-steps {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+    }
+
+    .installation-section h2 {
+        font-size: var(--font-size-2xl);
+        text-align: center;
+        margin-bottom: var(--spacing-6);
+    }
+
+    /* Prerequisites and config cards */
+    .prerequisite-card h3,
+    .config-card h3 {
+        font-size: var(--font-size-lg);
+    }
+
+    .prerequisite-card p,
+    .config-card p {
+        font-size: var(--font-size-sm);
+    }
+
+    /* Post-installation cards */
+    .post-install-card h3 {
+        font-size: var(--font-size-lg);
+    }
+
+    .post-install-card p {
+        font-size: var(--font-size-sm);
+    }
+
+    /* Troubleshooting cards */
+    .troubleshoot-card h3 {
+        font-size: var(--font-size-lg);
+    }
+
+    .troubleshoot-card p {
+        font-size: var(--font-size-sm);
+    }
 }
 
+/* Small mobile devices */
 @media (max-width: 480px) {
     .container {
         padding: 0 var(--spacing-3);
     }
 
-    .hero {
-        padding: var(--spacing-16) 0 var(--spacing-12);
-    }
-
+    /* Typography */
     .hero-content h1 {
         font-size: var(--font-size-3xl);
+        line-height: 1.1;
     }
 
     .hero-subtitle {
-        font-size: var(--font-size-lg);
-    }
-
-    .page-header {
-        padding: var(--spacing-16) 0 var(--spacing-8);
+        font-size: var(--font-size-base);
     }
 
     .page-header h1 {
@@ -1678,21 +2011,412 @@ body {
     }
 
     .section-header h2 {
-        font-size: var(--font-size-2xl);
+        font-size: var(--font-size-xl);
     }
 
+    .section-header h3 {
+        font-size: var(--font-size-lg);
+    }
+
+    /* Buttons */
     .btn {
         padding: var(--spacing-3) var(--spacing-4);
         font-size: var(--font-size-sm);
+        min-height: 44px; /* Touch-friendly minimum */
     }
 
-    .code-block {
+    .hero-buttons .btn {
+        min-width: 180px;
+    }
+
+    /* Cards and spacing */
+    .feature-card,
+    .script-overview-card,
+    .step-card,
+    .prerequisite-card,
+    .config-card,
+    .post-install-card,
+    .troubleshoot-card,
+    .usage-step,
+    .command-card,
+    .api-example,
+    .integration-example,
+    .tip-card,
+    .practice-card,
+    .faq-item,
+    .code-example,
+    .debug-section,
+    .support-card {
         padding: var(--spacing-3);
+        margin-bottom: var(--spacing-3);
+    }
+
+    /* Code blocks */
+    .code-block {
+        padding: var(--spacing-2);
+        font-size: var(--font-size-xs);
     }
 
     .code-block pre {
         font-size: var(--font-size-xs);
+        line-height: 1.3;
     }
+
+    /* Purchase notice */
+    .purchase-notice {
+        padding: var(--spacing-3);
+        margin: var(--spacing-3) 0;
+    }
+
+    .purchase-notice i {
+        font-size: var(--font-size-xl);
+    }
+
+    .purchase-notice h4 {
+        font-size: var(--font-size-base);
+    }
+
+    /* Navigation */
+    .nav-logo span {
+        font-size: var(--font-size-lg);
+    }
+
+    .nav-link {
+        padding: var(--spacing-3) var(--spacing-2);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Footer */
+    .footer {
+        padding: var(--spacing-8) 0 var(--spacing-4);
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+        font-size: var(--font-size-base);
+    }
+
+    .footer-section p,
+    .footer-section li {
+        font-size: var(--font-size-sm);
+    }
+
+    /* Config box */
+    .config-header {
+        padding: var(--spacing-2);
+    }
+
+    .config-header h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .copy-btn {
+        padding: var(--spacing-2) var(--spacing-3);
+        font-size: var(--font-size-xs);
+    }
+
+    /* Search */
+    .search-box input {
+        padding: var(--spacing-2);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Grid adjustments */
+    .quick-start-steps {
+        gap: var(--spacing-3);
+    }
+
+    .step {
+        padding: var(--spacing-3);
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-sm);
+    }
+
+    /* FAQ */
+    .faq-question {
+        padding: var(--spacing-3);
+        font-size: var(--font-size-sm);
+    }
+
+    .faq-answer {
+        padding: var(--spacing-3);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Info boxes */
+    .info-content h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .info-content p {
+        font-size: var(--font-size-sm);
+    }
+
+    /* Section spacing */
+    .section {
+        padding: var(--spacing-6) 0;
+    }
+
+    .page-header {
+        padding: var(--spacing-8) 0 var(--spacing-4);
+    }
+
+    /* Step headers and content for small mobile */
+    .step-header h3 {
+        font-size: var(--font-size-base) !important;
+        line-height: 1.2 !important;
+    }
+
+    .step-content p {
+        font-size: var(--font-size-xs) !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Purchase notice for small mobile */
+    .purchase-notice h4 {
+        font-size: var(--font-size-base) !important;
+        line-height: 1.2 !important;
+    }
+
+    .purchase-notice p {
+        font-size: var(--font-size-xs) !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Installation step cards for small mobile */
+    .step-card {
+        margin-bottom: var(--spacing-3);
+        padding: var(--spacing-3);
+    }
+
+    .step-header {
+        gap: var(--spacing-1);
+        margin-bottom: var(--spacing-2);
+    }
+
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: var(--font-size-base);
+    }
+
+    .step-content p {
+        font-size: var(--font-size-xs) !important;
+        line-height: 1.4 !important;
+        margin-bottom: var(--spacing-2);
+    }
+
+    /* Installation steps container for small mobile */
+    .installation-steps {
+        gap: var(--spacing-3);
+    }
+
+    .installation-section h2 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-4);
+    }
+
+    /* Prerequisites and config cards for small mobile */
+    .prerequisite-card h3,
+    .config-card h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .prerequisite-card p,
+    .config-card p {
+        font-size: var(--font-size-xs);
+    }
+
+    /* Post-installation cards for small mobile */
+    .post-install-card h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .post-install-card p {
+        font-size: var(--font-size-xs);
+    }
+
+    /* Troubleshooting cards for small mobile */
+    .troubleshoot-card h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .troubleshoot-card p {
+        font-size: var(--font-size-xs);
+    }
+}
+
+/* Extra small devices (320px and below) */
+@media (max-width: 320px) {
+    .container {
+        padding: 0 var(--spacing-2);
+    }
+
+    .hero-content h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .btn {
+        padding: var(--spacing-2) var(--spacing-3);
+        font-size: var(--font-size-xs);
+    }
+
+    .hero-buttons .btn {
+        min-width: 160px;
+    }
+
+    .nav-logo span {
+        font-size: var(--font-size-base);
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        padding: var(--spacing-8) 0 var(--spacing-6);
+    }
+
+    .page-header {
+        padding: var(--spacing-8) 0 var(--spacing-4);
+    }
+
+    .section {
+        padding: var(--spacing-6) 0;
+    }
+
+    .nav-menu {
+        height: calc(100vh - 60px);
+        top: 60px;
+    }
+}
+
+/* Touch device improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 48px;
+        padding: var(--spacing-4) var(--spacing-6);
+    }
+
+    .nav-link {
+        padding: var(--spacing-4) var(--spacing-3);
+    }
+
+    .dropdown-link {
+        padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    .faq-question {
+        padding: var(--spacing-4);
+    }
+
+    .copy-btn {
+        min-height: 44px;
+        padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    /* Remove hover effects on touch devices */
+    .btn:hover,
+    .nav-link:hover,
+    .dropdown-link:hover,
+    .faq-question:hover,
+    .copy-btn:hover {
+        transform: none;
+    }
+
+    /* Add active states for touch feedback */
+    .btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    .nav-link:active,
+    .dropdown-link:active {
+        background: var(--bg-hover);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .nav-logo i,
+    .hero-icon,
+    .feature-icon {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Mobile device specific styles */
+.mobile-device {
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-device .nav-menu {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.nav-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Improved focus states for accessibility */
+.btn:focus,
+.nav-link:focus,
+.dropdown-link:focus,
+.copy-btn:focus,
+.faq-question:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Better scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Smooth transitions for all interactive elements */
+.btn,
+.nav-link,
+.dropdown-link,
+.copy-btn,
+.faq-question,
+.config-header {
+    transition: all 0.2s ease;
+}
+
+/* Improved text selection */
+::selection {
+    background: var(--primary-color);
+    color: white;
+}
+
+::-moz-selection {
+    background: var(--primary-color);
+    color: white;
 }
 
 /* Animations */
