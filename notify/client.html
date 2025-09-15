@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Navbar will be loaded here -->
     <div id="navbar-container"></div>
@@ -33,33 +35,52 @@
             <!-- Overview -->
             <div class="client-section">
                 <h2><i class="fas fa-laptop-code"></i> Client-Side Overview</h2>
-                <p>Axion Notify provides a <code>shared/client.lua</code> file that allows you to add custom client-side functionality. This file is designed to be easily customizable without modifying the core script files.</p>
-                
+                <p>Axion Notify provides a <code>shared/client.lua</code> file that allows you to add custom client-side
+                    functionality. This file is designed to be easily customizable without modifying the core script
+                    files.</p>
+
                 <div class="info-box">
                     <div class="info-icon">
                         <i class="fas fa-info-circle"></i>
                     </div>
                     <div class="info-content">
                         <h3>Important Note</h3>
-                        <p>The <code>shared/client.lua</code> file is loaded after the main client files, allowing you to override or extend existing functionality without breaking updates.</p>
+                        <p>The <code>shared/client.lua</code> file is loaded after the main client files, allowing you
+                            to override or extend existing functionality without breaking updates.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- File Structure -->
+            <!-- Exports -->
             <div class="client-section">
-                <h2><i class="fas fa-folder-tree"></i> File Structure</h2>
-                <div class="file-structure">
+                <h2><i class="fas fa-file-export"></i> Client-side Exports</h2>
+                <div class="exports">
                     <div class="code-block">
-                        <pre><code>axion-notify/
-├── client/
-│   ├── client.lua          # Main client file (DO NOT EDIT)
-│   └── shared/
-│       └── client.lua      # Your custom client code (EDIT THIS)
-├── server/
-├── html/
-├── config.lua
-└── fxmanifest.lua</code></pre>
+                        <pre><code>
+-- Simple notification
+exports['axion-notify']:notify('Message', 'type', time) -- 'type' can be 'success', 'error', 'warning', 'info', 'time' is in milliseconds
+
+-- Advanced notification
+exports['axion-notify']:notifyAdvanced(
+    'Custom Title',           -- Title
+    'This is a custom message', -- Message
+    'info',                   -- Type
+    5000,                     -- Duration
+    'fas fa-star'             -- Custom icon
+)
+
+-- Custom notification
+exports['axion-notify']:notifyCustom(
+    'Custom Title',
+    'Custom message with custom styling',
+    5000,
+    'fas fa-heart',
+    '#ff6b6b'  -- Custom color (HEX code)
+)
+
+-- Clear all notifications
+exports['axion-notify']:clearAll()
+                        </code></pre>
                     </div>
                 </div>
             </div>
@@ -68,7 +89,7 @@
             <div class="client-section">
                 <h2><i class="fas fa-palette"></i> Custom Notification Types</h2>
                 <p>Add custom notification types and behaviors:</p>
-                
+
                 <div class="code-example">
                     <h3>Example: Custom Notification Types</h3>
                     <div class="code-block">
@@ -116,7 +137,7 @@ end</code></pre>
             <div class="client-section">
                 <h2><i class="fas fa-volume-up"></i> Custom Sound Integration</h2>
                 <p>Add custom sound effects for different notification types:</p>
-                
+
                 <div class="code-example">
                     <h3>Example: Custom Sound System</h3>
                     <div class="code-block">
@@ -156,7 +177,7 @@ end</code></pre>
             <!-- Best Practices -->
             <div class="client-section">
                 <h2><i class="fas fa-star"></i> Best Practices</h2>
-                
+
                 <div class="best-practices">
                     <div class="practice-card">
                         <div class="practice-icon">
@@ -254,4 +275,5 @@ end</code></pre>
     <script src="../components/component-loader.js"></script>
     <script src="../script.js"></script>
 </body>
+
 </html>

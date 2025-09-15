@@ -137,36 +137,9 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="step-card">
                         <div class="step-header">
                             <div class="step-number">2</div>
-                            <h3>Install the Script</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Place the downloaded files in your resources folder:</p>
-                            <div class="code-block">
-                                <pre><code>resources/
-└── axion-blackmarket/
-    ├── fxmanifest.lua
-    ├── config.lua
-    ├── client/
-    │   ├── client.lua
-    │   └── shared/
-    │       └── client.lua
-    ├── server/
-    │   ├── server.lua
-    │   └── shared/
-    │       └── server.lua
-    └── data/
-        └── shop_items.lua</code></pre>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
                             <h3>Configure Dependencies</h3>
                         </div>
                         <div class="step-content">
@@ -185,7 +158,7 @@ ensure axion-blackmarket</code></pre>
 
                     <div class="step-card">
                         <div class="step-header">
-                            <div class="step-number">4</div>
+                            <div class="step-number">3</div>
                             <h3>Configure the Script</h3>
                         </div>
                         <div class="step-content">
@@ -215,7 +188,7 @@ Config.ShopLocations = {
 
                     <div class="step-card">
                         <div class="step-header">
-                            <div class="step-number">5</div>
+                            <div class="step-number">4</div>
                             <h3>Customize Items</h3>
                         </div>
                         <div class="step-content">
@@ -238,17 +211,15 @@ Config.ShopLocations = {
 
                     <div class="step-card">
                         <div class="step-header">
-                            <div class="step-number">6</div>
+                            <div class="step-number">5</div>
                             <h3>Start the Resource</h3>
                         </div>
                         <div class="step-content">
                             <p>Restart your server or start the resource manually:</p>
                             <div class="code-block">
-                                <pre><code># In server console
-restart axion-blackmarket
-
-# Or start if not running
-start axion-blackmarket</code></pre>
+                                <pre><code>-- To manually start, type the following in the server console (or f8)
+start axion-blackmarket
+</code></pre>
                             </div>
                         </div>
                     </div>
@@ -272,7 +243,7 @@ start axion-blackmarket</code></pre>
                         <h4><i class="fas fa-money-bill-wave"></i> Payment System</h4>
                         <p>Flexible payment options:</p>
                         <ul>
-                            <li>Clean money mode (cash and bank)</li>
+                            <li>Clean money mode</li>
                             <li>Black money mode</li>
                             <li>Framework support (ESX/QBCore)</li>
                         </ul>

@@ -385,55 +385,6 @@ function throttle(func, limit) {
     };
 }
 
-// Theme toggle functionality (optional)
-function initThemeToggle() {
-    const themeToggle = document.createElement('button');
-    themeToggle.className = 'theme-toggle';
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    themeToggle.title = 'Toggle dark mode';
-    
-    // Style the theme toggle button
-    themeToggle.style.position = 'fixed';
-    themeToggle.style.bottom = '20px';
-    themeToggle.style.right = '20px';
-    themeToggle.style.width = '50px';
-    themeToggle.style.height = '50px';
-    themeToggle.style.borderRadius = '50%';
-    themeToggle.style.background = 'var(--primary-color)';
-    themeToggle.style.border = 'none';
-    themeToggle.style.color = 'white';
-    themeToggle.style.cursor = 'pointer';
-    themeToggle.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    themeToggle.style.transition = 'all 0.3s ease';
-    themeToggle.style.zIndex = '1000';
-    
-    themeToggle.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.1)';
-    });
-    
-    themeToggle.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-    });
-    
-    // Theme toggle functionality
-    themeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark-theme');
-        const isDark = document.body.classList.contains('dark-theme');
-        this.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        
-        // Save theme preference
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-    
-    document.body.appendChild(themeToggle);
-}
 
 // Keyboard shortcuts
 function initKeyboardShortcuts() {
@@ -462,10 +413,6 @@ function initKeyboardShortcuts() {
 
 // Initialize additional features
 document.addEventListener('DOMContentLoaded', function() {
-    // Only initialize theme toggle if not on mobile
-    if (window.innerWidth > 768) {
-        initThemeToggle();
-    }
     
     initKeyboardShortcuts();
     

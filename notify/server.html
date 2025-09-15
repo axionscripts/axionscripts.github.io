@@ -48,18 +48,40 @@
 
             <!-- File Structure -->
             <div class="server-section">
-                <h2><i class="fas fa-folder-tree"></i> File Structure</h2>
-                <div class="file-structure">
+                <h2><i class="fas fa-file-export"></i> Server-side Exports</h2>
+                <div class="exports">
                     <div class="code-block">
-                        <pre><code>axion-notify/
-├── server/
-│   ├── server.lua          # Main server file (DO NOT EDIT)
-│   └── shared/
-│       └── server.lua      # Your custom server code (EDIT THIS)
-├── client/
-├── html/
-├── config.lua
-└── fxmanifest.lua</code></pre>
+                        <pre><code>
+-- Basic server notification
+exports['axion-notify']:notifyPlayer(source, 'Message', 'Type', 5000)
+
+-- Advanced server notification
+exports['axion-notify']:notifyPlayerAdvanced(source, {
+    title = 'Title',
+    message = 'Message',
+    type = 'Type', -- 'Type' can be 'success', 'error', 'warning', 'info'
+    duration = 5000, -- 'Duration' is in milliseconds
+    icon = 'fas fa-server'
+})
+
+-- Notify all players
+exports['axion-notify']:notifyAll('Message', 'Type', 10000)
+
+-- Advanced notification for all players
+exports['axion-notify']:notifyAllAdvanced({
+    title = 'Title',
+    message = 'Message',
+    type = 'Type', -- 'Type' can be 'success', 'error', 'warning', 'info'
+    duration = 8000, -- 'Duration' is in milliseconds
+    icon = 'fas fa-bullhorn'
+})
+
+-- Clear notifications for specific player
+exports['axion-notify']:clearPlayerNotifications(source)
+
+-- Clear all notifications for all players
+exports['axion-notify']:clearAllNotifications()
+                        </code></pre>
                     </div>
                 </div>
             </div>

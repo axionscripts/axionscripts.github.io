@@ -1388,7 +1388,15 @@ body {
     margin: var(--spacing-4) 0;
     overflow-x: auto;
 }
-
+/* Exports */
+.exports {
+    background: var(--bg-card);
+    border: 1px solid var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+    margin: var(--spacing-4) 0;
+    overflow-x: auto;
+}
 /* Code Examples */
 .code-example {
     background: var(--bg-card);
