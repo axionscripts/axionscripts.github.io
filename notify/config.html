@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Notify - Configuration</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Notify</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Configuration</span>
+            </div>
+            <h1><i class="fas fa-bell"></i> Axion Notify - Configuration</h1>
+            <p>Complete configuration reference and examples for Axion Notify</p>
+        </div>
+    </section>
+
+    <!-- Config Content -->
+    <section class="config-content">
+        <div class="container">
+            <!-- Main Config -->
+            <div class="config-section">
+                <h2><i class="fas fa-cogs"></i> Main Configuration</h2>
+                <p>Below is the complete configuration file for Axion Notify. Copy and paste this into your <code>config.lua</code> file and modify the values as needed.</p>
+                
+                <div class="config-box">
+                    <div class="config-header">
+                        <h3><i class="fas fa-file-code"></i> config.lua</h3>
+                        <button class="copy-btn" onclick="copyConfig('main-config')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-block" id="main-config">
+                        <pre><code>-- Paste your complete config.lua content here
+-- This will be replaced with the actual configuration file content</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Examples -->
+            <div class="config-section">
+                <h2><i class="fas fa-lightbulb"></i> Configuration Examples</h2>
+                
+                <div class="config-example">
+                    <h3>Basic Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config = {}
+
+-- Framework Configuration
+Config.Framework = "esx" -- "esx", "qb-core", or "standalone"
+
+-- Notification Settings
+Config.Position = "top-right" -- "top-left", "top-right", "bottom-left", "bottom-right"
+Config.MaxNotifications = 5
+Config.DefaultDuration = 5000
+Config.SoundEnabled = true
+Config.AnimationDuration = 300</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Notification Types</h3>
+                    <div class="code-block">
+                        <pre><code>Config.NotificationTypes = {
+    ["success"] = {
+        title = "Success",
+        color = "#10b981",
+        icon = "fas fa-check-circle",
+        sound = "success_sound"
+    },
+    ["error"] = {
+        title = "Error",
+        color = "#ef4444",
+        icon = "fas fa-exclamation-circle",
+        sound = "error_sound"
+    },
+    ["warning"] = {
+        title = "Warning",
+        color = "#f59e0b",
+        icon = "fas fa-exclamation-triangle",
+        sound = "warning_sound"
+    },
+    ["info"] = {
+        title = "Information",
+        color = "#3b82f6",
+        icon = "fas fa-info-circle",
+        sound = "info_sound"
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Custom Notification Types</h3>
+                    <div class="code-block">
+                        <pre><code>-- Add custom notification types
+Config.CustomTypes = {
+    ["police"] = {
+        title = "Police Alert",
+        color = "#3498db",
+        icon = "fas fa-shield-alt",
+        sound = "police_alert",
+        duration = 8000
+    },
+    ["gang"] = {
+        title = "Gang Message",
+        color = "#e74c3c",
+        icon = "fas fa-skull",
+        sound = "gang_notification",
+        duration = 6000
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Framework Integration</h3>
+                    <div class="code-block">
+                        <pre><code>-- ESX Integration
+if Config.Framework == "esx" then
+    ESX = exports["es_extended"]:getSharedObject()
+    
+    -- Override ESX notifications
+    function ESX.ShowNotification(message, type, duration)
+        exports['axion-notify']:notify(message, type, duration)
+    end
+end
+
+-- QBCore Integration
+if Config.Framework == "qb-core" then
+    QBCore = exports['qb-core']:GetCoreObject()
+    
+    -- Override QBCore notifications
+    function QBCore.Functions.Notify(message, type, duration)
+        exports['axion-notify']:notify(message, type, duration)
+    end
+end</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Tips -->
+            <div class="config-section">
+                <h2><i class="fas fa-tips"></i> Configuration Tips</h2>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Custom Colors</h3>
+                        <p>Use hex color codes for custom notification colors. Ensure good contrast with white text for readability.</p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Sound Configuration</h3>
+                        <p>Add custom sound files to the resource and reference them in the configuration. Use .ogg or .wav format for best compatibility.</p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Position Settings</h3>
+                        <p>Choose notification position based on your UI layout. "top-right" is most common, but "bottom-right" works well for mobile-style interfaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="config.html">Config</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        function copyConfig(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success message
+                const btn = element.previousElementSibling.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = 'var(--success-color)';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Black Market - Configuration</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Black Market</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Configuration</span>
+            </div>
+            <h1><i class="fas fa-store"></i> Axion Black Market - Configuration</h1>
+            <p>Complete configuration reference and examples for Axion Black Market</p>
+        </div>
+    </section>
+
+    <!-- Config Content -->
+    <section class="config-content">
+        <div class="container">
+            <!-- Main Config -->
+            <div class="config-section">
+                <h2><i class="fas fa-cogs"></i> Main Configuration</h2>
+                <p>Below is the complete configuration file for Axion Black Market. Copy and paste this into your <code>config.lua</code> file and modify the values as needed.</p>
+                
+                <div class="config-box">
+                    <div class="config-header">
+                        <h3><i class="fas fa-file-code"></i> config.lua</h3>
+                        <button class="copy-btn" onclick="copyConfig('main-config')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-block" id="main-config">
+                        <pre><code>-- Paste your complete config.lua content here
+-- This will be replaced with the actual configuration file content</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Examples -->
+            <div class="config-section">
+                <h2><i class="fas fa-lightbulb"></i> Configuration Examples</h2>
+                
+                <div class="config-example">
+                    <h3>Shop Types Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config.ShopTypes = {
+    ["weapons"] = {
+        name = "Weapon Dealer",
+        model = "s_m_y_dealer_01",
+        items = "weapon_items",
+        payment_type = "black_money",
+        price_multiplier = 1.0,
+        randomized = false,
+        max_items = 10
+    },
+    ["drugs"] = {
+        name = "Drug Dealer",
+        model = "s_m_y_dealer_01",
+        items = "drug_items",
+        payment_type = "clean_money",
+        price_multiplier = 1.2,
+        randomized = true,
+        max_items = 15
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Timing Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config.Timing = {
+    mode = "schedule", -- "duration", "schedule", or "always"
+    duration_minutes = 60, -- For duration mode
+    schedule = {
+        start_hour = 21, -- 9 PM (24-hour format)
+        end_hour = 1,    -- 1 AM (24-hour format) - supports midnight crossing
+        days = {1,2,3,4,5,6,7} -- Days of week (1=Monday)
+    },
+    always = {
+        respawn_interval = 300 -- Respawn interval in seconds when shop despawns
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Item Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>ShopItems.weapon_items = {
+    {
+        name = "weapon_pistol",
+        label = "Pistol",
+        price = 2500,
+        category = "weapons",
+        weight = 1.0,
+        description = "A standard pistol for self-defense",
+        stock = {
+            type = "random", -- "unlimited", "fixed", or "random"
+            amount = 5, -- For fixed type
+            range = {min = 2, max = 8} -- For random type
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Location Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config.ShopLocations = {
+    {
+        coords = vector3(1234.56, 7890.12, 45.67),
+        heading = 90.0,
+        shop_type = "weapons",
+        blip = {
+            sprite = 52,
+            color = 1,
+            scale = 0.8,
+            name = "Black Market"
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Tips -->
+            <div class="config-section">
+                <h2><i class="fas fa-tips"></i> Configuration Tips</h2>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Timing Modes</h3>
+                        <p>Use "schedule" mode for realistic black market hours, "duration" for time-limited events, or "always" for permanent shops with respawn intervals.</p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Payment Types</h3>
+                        <p>Configure different payment types per shop type. Use "black_money" for illegal items, "clean_money" for legal items, or "crypto" for modern payments.</p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Stock Management</h3>
+                        <p>Use "random" stock type for dynamic inventory, "fixed" for consistent stock, or "unlimited" for always available items.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-container"></div>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        function copyConfig(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success message
+                const btn = element.previousElementSibling.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = 'var(--success-color)';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Black Market - Usage Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Black Market</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Usage</span>
+            </div>
+            <h1><i class="fas fa-store"></i> Axion Black Market - Usage Guide</h1>
+            <p>Complete usage guide and API documentation for Axion Black Market</p>
+        </div>
+    </section>
+
+    <!-- Usage Content -->
+    <section class="usage-content">
+        <div class="container">
+            <!-- Player Usage -->
+            <div class="usage-section">
+                <h2><i class="fas fa-user"></i> For Players</h2>
+                
+                <div class="usage-steps">
+                    <div class="usage-step">
+                        <div class="step-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Find a Shop</h4>
+                            <p>Look for black market blips on the map or NPCs at configured locations. Shops spawn randomly based on your timing configuration.</p>
+                        </div>
+                    </div>
+                    <div class="usage-step">
+                        <div class="step-icon">
+                            <i class="fas fa-hand-pointer"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Interact with NPC</h4>
+                            <p>Use ox-target to interact with the shop NPC. The interaction will open the shop interface.</p>
+                        </div>
+                    </div>
+                    <div class="usage-step">
+                        <div class="step-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Browse Items</h4>
+                            <p>Use the category filters to find items. Only categories with available items will be shown.</p>
+                        </div>
+                    </div>
+                    <div class="usage-step">
+                        <div class="step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="step-content">
+                            <h4>Purchase Items</h4>
+                            <p>Select an item, choose quantity, and payment method. Items will be added to your inventory upon successful purchase.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Commands -->
+            <div class="usage-section">
+                <h2><i class="fas fa-crown"></i> Admin Commands</h2>
+                <div class="commands-grid">
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/blackmarket spawn</code>
+                            <span class="command-type">Admin</span>
+                        </div>
+                        <p>Spawns a black market shop at a random location</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/blackmarket despawn</code>
+                            <span class="command-type">Admin</span>
+                        </div>
+                        <p>Despawns all active black market shops</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/blackmarket reload</code>
+                            <span class="command-type">Admin</span>
+                        </div>
+                        <p>Reloads the black market configuration</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/blackmarket status</code>
+                            <span class="command-type">Admin</span>
+                        </div>
+                        <p>Shows the current status of all shops</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Examples -->
+            <div class="usage-section">
+                <h2><i class="fas fa-cogs"></i> Configuration Examples</h2>
+                
+                <div class="config-example">
+                    <h3>Shop Types Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config.ShopTypes = {
+    ["weapons"] = {
+        name = "Weapon Dealer",
+        model = "s_m_y_dealer_01",
+        items = "weapon_items",
+        payment_type = "black_money",
+        price_multiplier = 1.0,
+        randomized = false,
+        max_items = 10
+    },
+    ["drugs"] = {
+        name = "Drug Dealer",
+        model = "s_m_y_dealer_01",
+        items = "drug_items",
+        payment_type = "clean_money",
+        price_multiplier = 1.2,
+        randomized = true,
+        max_items = 15
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Timing Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>Config.Timing = {
+    mode = "schedule", -- "duration", "schedule", or "always"
+    duration_minutes = 60, -- For duration mode
+    schedule = {
+        start_hour = 21, -- 9 PM (24-hour format)
+        end_hour = 1,    -- 1 AM (24-hour format) - supports midnight crossing
+        days = {1,2,3,4,5,6,7} -- Days of week (1=Monday)
+    },
+    always = {
+        respawn_interval = 300 -- Respawn interval in seconds when shop despawns
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="config-example">
+                    <h3>Item Configuration</h3>
+                    <div class="code-block">
+                        <pre><code>ShopItems.weapon_items = {
+    {
+        name = "weapon_pistol",
+        label = "Pistol",
+        price = 2500,
+        category = "weapons",
+        weight = 1.0,
+        description = "A standard pistol for self-defense",
+        stock = {
+            type = "random", -- "unlimited", "fixed", or "random"
+            amount = 5, -- For fixed type
+            range = {min = 2, max = 8} -- For random type
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

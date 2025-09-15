@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Black Market - Client Customization</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Black Market</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Client</span>
+            </div>
+            <h1><i class="fas fa-store"></i> Axion Black Market - Client Customization</h1>
+            <p>Learn how to customize Axion Black Market with client-side modifications</p>
+        </div>
+    </section>
+
+    <!-- Client Content -->
+    <section class="client-content">
+        <div class="container">
+            <!-- Overview -->
+            <div class="client-section">
+                <h2><i class="fas fa-laptop-code"></i> Client-Side Overview</h2>
+                <p>Axion Black Market provides a <code>shared/client.lua</code> file that allows you to add custom client-side functionality. This file is designed to be easily customizable without modifying the core script files.</p>
+                
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Important Note</h3>
+                        <p>The <code>shared/client.lua</code> file is loaded after the main client files, allowing you to override or extend existing functionality without breaking updates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Structure -->
+            <div class="client-section">
+                <h2><i class="fas fa-folder-tree"></i> File Structure</h2>
+                <div class="file-structure">
+                    <div class="code-block">
+                        <pre><code>axion-blackmarket/
+├── client/
+│   ├── client.lua          # Main client file (DO NOT EDIT)
+│   └── shared/
+│       └── client.lua      # Your custom client code (EDIT THIS)
+├── server/
+├── config.lua
+└── fxmanifest.lua</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Notification Integration -->
+            <div class="client-section">
+                <h2><i class="fas fa-bell"></i> Custom Notification Integration</h2>
+                <p>Integrate your custom notification system with the black market:</p>
+                
+                <div class="code-example">
+                    <h3>Example: Custom Notify Integration</h3>
+                    <div class="code-block">
+                        <pre><code>-- axion-blackmarket/client/shared/client.lua
+
+-- Override the default notification function
+function ShowNotification(message, type, duration)
+    -- Check if axion-notify is available
+    if GetResourceState('axion-notify') == 'started' then
+        exports['axion-notify']:notify(message, type, duration)
+    -- Check if your custom notification system is available
+    elseif GetResourceState('your-custom-notify') == 'started' then
+        exports['your-custom-notify']:showNotification(message, type, duration)
+    -- Fallback to default notification
+    else
+        SetNotificationTextEntry("STRING")
+        AddTextComponentString(message)
+        DrawNotification(0, 1)
+    end
+end
+
+-- Custom shop spawn notification
+RegisterNetEvent('axion-blackmarket:shopSpawned')
+AddEventHandler('axion-blackmarket:shopSpawned', function(shopData)
+    local playerCoords = GetEntityCoords(PlayerPedId())
+    local distance = #(playerCoords - shopData.coords)
+    
+    if distance < 100.0 then -- Only notify if close
+        ShowNotification('A black market shop has appeared nearby!', 'info', 8000)
+        
+        -- Add custom blip if needed
+        if Config.CustomBlips then
+            local blip = AddBlipForCoord(shopData.coords.x, shopData.coords.y, shopData.coords.z)
+            SetBlipSprite(blip, 52)
+            SetBlipColour(blip, 1)
+            SetBlipScale(blip, 0.8)
+            SetBlipAsShortRange(blip, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString("Black Market")
+            EndTextCommandSetBlipName(blip)
+            
+            -- Remove blip after 5 minutes
+            SetTimeout(300000, function()
+                RemoveBlip(blip)
+            end)
+        end
+    end
+end)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom UI Modifications -->
+            <div class="client-section">
+                <h2><i class="fas fa-paint-brush"></i> Custom UI Modifications</h2>
+                <p>Add custom UI elements or modify the shop interface:</p>
+                
+                <div class="code-example">
+                    <h3>Example: Custom Shop UI Enhancements</h3>
+                    <div class="code-block">
+                        <pre><code>-- axion-blackmarket/client/shared/client.lua
+
+-- Add custom shop information display
+RegisterNetEvent('axion-blackmarket:openShop')
+AddEventHandler('axion-blackmarket:openShop', function(shopData)
+    -- Your custom code before shop opens
+    if Config.ShowShopInfo then
+        ShowNotification('Welcome to ' .. shopData.name, 'info', 3000)
+    end
+    
+    -- Add custom shop timer display
+    if Config.ShowShopTimer then
+        CreateThread(function()
+            while shopData.isOpen do
+                local timeLeft = shopData.endTime - GetGameTimer()
+                if timeLeft > 0 then
+                    local minutes = math.floor(timeLeft / 60000)
+                    local seconds = math.floor((timeLeft % 60000) / 1000)
+                    
+                    -- Display custom timer in UI
+                    SendNUIMessage({
+                        type = 'updateTimer',
+                        timeLeft = string.format("%02d:%02d", minutes, seconds)
+                    })
+                end
+                Wait(1000)
+            end
+        end)
+    end
+end)
+
+-- Custom purchase confirmation
+RegisterNetEvent('axion-blackmarket:purchaseItem')
+AddEventHandler('axion-blackmarket:purchaseItem', function(itemData, quantity, totalPrice)
+    -- Add custom purchase logging
+    if Config.LogPurchases then
+        print(string.format("Player purchased %dx %s for $%d", quantity, itemData.label, totalPrice))
+    end
+    
+    -- Add custom purchase effects
+    if Config.PurchaseEffects then
+        -- Play custom sound
+        PlaySoundFrontend(-1, "PURCHASE", "HUD_AWARDS", 1)
+        
+        -- Add screen effect
+        SetFlash(0, 0, 100, 500, 100)
+    end
+end)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="client-section">
+                <h2><i class="fas fa-star"></i> Best Practices</h2>
+                
+                <div class="best-practices">
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Code Organization</h3>
+                        <ul>
+                            <li>Keep your custom code organized and commented</li>
+                            <li>Use descriptive function and variable names</li>
+                            <li>Group related functionality together</li>
+                            <li>Add error handling for all custom functions</li>
+                        </ul>
+                    </div>
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Error Handling</h3>
+                        <ul>
+                            <li>Always check if resources are available before using them</li>
+                            <li>Use pcall() for potentially failing operations</li>
+                            <li>Provide fallback functionality when possible</li>
+                            <li>Log errors for debugging purposes</li>
+                        </ul>
+                    </div>
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>Performance</h3>
+                        <ul>
+                            <li>Avoid creating threads that run constantly</li>
+                            <li>Use appropriate wait times in loops</li>
+                            <li>Clean up resources when no longer needed</li>
+                            <li>Optimize database queries and network calls</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

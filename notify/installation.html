@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Notify - Installation Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Notify</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Installation</span>
+            </div>
+            <h1><i class="fas fa-bell"></i> Axion Notify - Installation</h1>
+            <p>Complete installation guide for the Axion Notify script</p>
+        </div>
+    </section>
+
+    <!-- Installation Content -->
+    <section class="installation-content">
+        <div class="container">
+            <!-- Prerequisites -->
+            <div class="installation-section">
+                <h2><i class="fas fa-list-check"></i> Prerequisites</h2>
+                <div class="prerequisites-grid">
+                    <div class="prerequisite-card">
+                        <div class="prerequisite-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>ox_lib</h3>
+                        <p>Required for UI components and notifications</p>
+                        <a href="https://github.com/overextended/ox_lib" target="_blank" class="btn btn-outline btn-sm">Download</a>
+                    </div>
+                    <div class="prerequisite-card">
+                        <div class="prerequisite-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>ESX or QBCore</h3>
+                        <p>Player framework (optional but recommended)</p>
+                        <div class="framework-links">
+                            <a href="https://github.com/esx-framework/esx_core" target="_blank" class="btn btn-outline btn-sm">ESX</a>
+                            <a href="https://github.com/qbcore-framework/qb-core" target="_blank" class="btn btn-outline btn-sm">QBCore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Installation Steps -->
+            <div class="installation-section">
+                <h2><i class="fas fa-download"></i> Installation Steps</h2>
+                
+                <div class="installation-steps">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h3>Purchase and Download</h3>
+                        </div>
+                        <div class="step-content">
+                            <p>Purchase the script from our Tebex store and download the files:</p>
+                            <div class="purchase-notice">
+                                <i class="fas fa-shopping-cart"></i>
+                                <div>
+                                    <h4>Get Axion Notify</h4>
+                                    <p>Purchase the script to get access to download links and support</p>
+                                    <a href="https://axionstore.tebex.io/" target="_blank" class="btn btn-primary">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Purchase Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <h3>Install the Script</h3>
+                        </div>
+                        <div class="step-content">
+                            <p>Place the downloaded files in your resources folder:</p>
+                            <div class="code-block">
+                                <pre><code>resources/
+└── axion-notify/
+    ├── fxmanifest.lua
+    ├── config.lua
+    ├── client/
+    │   ├── client.lua
+    │   └── shared/
+    │       └── client.lua
+    ├── server/
+    │   ├── server.lua
+    │   └── shared/
+    │       └── server.lua
+    └── html/
+        ├── index.html
+        ├── style.css
+        └── script.js</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <h3>Add to Server Config</h3>
+                        </div>
+                        <div class="step-content">
+                            <p>Add the resource to your <code>server.cfg</code>:</p>
+                            <div class="code-block">
+                                <pre><code># Axion Notify
+ensure axion-notify</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">4</div>
+                            <h3>Configure Notifications</h3>
+                        </div>
+                        <div class="step-content">
+                            <p>Edit <code>config.lua</code> to customize the notification system:</p>
+                            <div class="code-block">
+                                <pre><code>Config = {}
+
+-- General Settings
+Config.DefaultDuration = 5000 -- Default notification duration in milliseconds
+Config.MaxNotifications = 5 -- Maximum number of notifications visible at once
+Config.Position = 'top-right' -- Position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'
+Config.AnimationDuration = 300 -- Animation duration in milliseconds
+Config.SoundEnabled = true -- Enable/disable sound effects
+
+-- Notification Types
+Config.Types = {
+    ['success'] = {
+        title = 'Success',
+        color = '#2ecc71',
+        icon = 'fas fa-check-circle',
+        sound = 'success'
+    },
+    -- ... more types
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">5</div>
+                            <h3>Start the Resource</h3>
+                        </div>
+                        <div class="step-content">
+                            <p>Restart your server or start the resource manually:</p>
+                            <div class="code-block">
+                                <pre><code># In server console
+restart axion-notify
+
+# Or start if not running
+start axion-notify</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Options -->
+            <div class="installation-section">
+                <h2><i class="fas fa-cogs"></i> Configuration Options</h2>
+                <div class="config-grid">
+                    <div class="config-card">
+                        <h4><i class="fas fa-palette"></i> UI Customization</h4>
+                        <p>Customize the appearance:</p>
+                        <ul>
+                            <li>Notification position</li>
+                            <li>Colors and themes</li>
+                            <li>Animation duration</li>
+                            <li>Maximum notifications</li>
+                        </ul>
+                    </div>
+                    <div class="config-card">
+                        <h4><i class="fas fa-volume-up"></i> Sound Effects</h4>
+                        <p>Audio feedback options:</p>
+                        <ul>
+                            <li>Enable/disable sounds</li>
+                            <li>Custom sound files</li>
+                            <li>Different sounds per type</li>
+                        </ul>
+                    </div>
+                    <div class="config-card">
+                        <h4><i class="fas fa-plug"></i> Framework Integration</h4>
+                        <p>Automatic integration:</p>
+                        <ul>
+                            <li>ESX notifications</li>
+                            <li>QBCore notifications</li>
+                            <li>Custom notification types</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post-Installation -->
+            <div class="installation-section">
+                <h2><i class="fas fa-check-circle"></i> Post-Installation</h2>
+                <div class="post-installation-grid">
+                    <div class="post-install-card">
+                        <div class="post-install-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3>Configure Settings</h3>
+                        <p>Review and adjust all configuration files to match your server's needs</p>
+                    </div>
+                    <div class="post-install-card">
+                        <div class="post-install-icon">
+                            <i class="fas fa-test-tube"></i>
+                        </div>
+                        <h3>Test Functionality</h3>
+                        <p>Use the built-in test commands to verify everything is working correctly</p>
+                    </div>
+                    <div class="post-install-card">
+                        <div class="post-install-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3>Integrate with Scripts</h3>
+                        <p>Connect Axion Notify with your other scripts for unified notifications</p>
+                    </div>
+                    <div class="post-install-card">
+                        <div class="post-install-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Read Documentation</h3>
+                        <p>Check out the usage guide and FAQ for advanced features and troubleshooting</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="installation-section">
+                <h2><i class="fas fa-tools"></i> Troubleshooting</h2>
+                <div class="troubleshooting-grid">
+                    <div class="troubleshoot-card">
+                        <h4>Notifications not appearing</h4>
+                        <ul>
+                            <li>Check if the resource is started without errors</li>
+                            <li>Verify HTML/CSS/JS files are in the correct location</li>
+                            <li>Check browser console (F12) for JavaScript errors</li>
+                        </ul>
+                    </div>
+                    <div class="troubleshoot-card">
+                        <h4>Sounds not playing</h4>
+                        <ul>
+                            <li>Check if Config.SoundEnabled = true</li>
+                            <li>Verify sound files exist in the correct location</li>
+                            <li>Check browser permissions for audio playback</li>
+                        </ul>
+                    </div>
+                    <div class="troubleshoot-card">
+                        <h4>Integration issues</h4>
+                        <ul>
+                            <li>Verify all required resources are installed and started</li>
+                            <li>Check if the resource names match exactly</li>
+                            <li>Ensure proper event handling and exports</li>
+                        </ul>
+                    </div>
+                    <div class="troubleshoot-card">
+                        <h4>Performance issues</h4>
+                        <ul>
+                            <li>Check for infinite loops in your custom code</li>
+                            <li>Verify wait times in threads are appropriate</li>
+                            <li>Monitor resource usage in the server console</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

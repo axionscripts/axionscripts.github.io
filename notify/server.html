@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Notify - Server Customization</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Notify</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Server</span>
+            </div>
+            <h1><i class="fas fa-bell"></i> Axion Notify - Server Customization</h1>
+            <p>Learn how to customize Axion Notify with server-side modifications</p>
+        </div>
+    </section>
+
+    <!-- Server Content -->
+    <section class="server-content">
+        <div class="container">
+            <!-- Overview -->
+            <div class="server-section">
+                <h2><i class="fas fa-server"></i> Server-Side Overview</h2>
+                <p>Axion Notify provides a <code>shared/server.lua</code> file that allows you to add custom server-side functionality. This file is designed to be easily customizable without modifying the core script files.</p>
+                
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Important Note</h3>
+                        <p>The <code>shared/server.lua</code> file is loaded after the main server files, allowing you to override or extend existing functionality without breaking updates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Structure -->
+            <div class="server-section">
+                <h2><i class="fas fa-folder-tree"></i> File Structure</h2>
+                <div class="file-structure">
+                    <div class="code-block">
+                        <pre><code>axion-notify/
+├── server/
+│   ├── server.lua          # Main server file (DO NOT EDIT)
+│   └── shared/
+│       └── server.lua      # Your custom server code (EDIT THIS)
+├── client/
+├── html/
+├── config.lua
+└── fxmanifest.lua</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Notification System -->
+            <div class="server-section">
+                <h2><i class="fas fa-bell"></i> Custom Notification System</h2>
+                <p>Add custom notification types and server-side logic:</p>
+                
+                <div class="code-example">
+                    <h3>Example: Role-Based Notifications</h3>
+                    <div class="code-block">
+                        <pre><code>-- axion-notify/server/shared/server.lua
+
+-- Custom notification system for different roles
+local roleNotifications = {
+    ['police'] = {
+        color = '#3498db',
+        icon = 'fas fa-shield-alt',
+        sound = 'police_alert'
+    },
+    ['ems'] = {
+        color = '#e74c3c',
+        icon = 'fas fa-ambulance',
+        sound = 'ems_alert'
+    },
+    ['mechanic'] = {
+        color = '#f39c12',
+        icon = 'fas fa-wrench',
+        sound = 'mechanic_alert'
+    },
+    ['admin'] = {
+        color = '#9b59b6',
+        icon = 'fas fa-crown',
+        sound = 'admin_alert'
+    }
+}
+
+-- Custom notification function for roles
+function NotifyRole(role, message, title, duration)
+    local players = GetPlayers()
+    
+    for _, playerId in ipairs(players) do
+        if GetPlayerRole(playerId) == role then
+            local notificationData = {
+                title = title or roleNotifications[role].title,
+                message = message,
+                type = role,
+                duration = duration or 5000,
+                icon = roleNotifications[role].icon,
+                color = roleNotifications[role].color
+            }
+            
+            TriggerClientEvent('axion-notify:clientNotifyAdvanced', playerId, notificationData)
+        end
+    end
+end
+
+-- Custom events for role-based notifications
+RegisterNetEvent('axion-notify:notifyPolice')
+AddEventHandler('axion-notify:notifyPolice', function(message, title, duration)
+    NotifyRole('police', message, title, duration)
+end)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Notification Logging -->
+            <div class="server-section">
+                <h2><i class="fas fa-clipboard-list"></i> Custom Notification Logging</h2>
+                <p>Add comprehensive logging for all notifications:</p>
+                
+                <div class="code-example">
+                    <h3>Example: Notification Logging System</h3>
+                    <div class="code-block">
+                        <pre><code>-- axion-notify/server/shared/server.lua
+
+-- Notification logging system
+local notificationLogs = {}
+
+-- Override the main notification function to add logging
+RegisterNetEvent('axion-notify:serverNotify')
+AddEventHandler('axion-notify:serverNotify', function(targetSource, message, type, duration)
+    local source = source
+    local targetPlayer = GetPlayerName(targetSource)
+    local senderPlayer = GetPlayerName(source)
+    
+    -- Log the notification
+    local logEntry = {
+        timestamp = os.time(),
+        sender = senderPlayer,
+        target = targetPlayer,
+        message = message,
+        type = type,
+        duration = duration
+    }
+    
+    table.insert(notificationLogs, logEntry)
+    
+    -- Keep only last 1000 logs
+    if #notificationLogs > 1000 then
+        table.remove(notificationLogs, 1)
+    end
+    
+    -- Proceed with normal notification
+    TriggerClientEvent('axion-notify:clientNotify', targetSource, message, type, duration)
+end)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="server-section">
+                <h2><i class="fas fa-star"></i> Best Practices</h2>
+                
+                <div class="best-practices">
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Security</h3>
+                        <ul>
+                            <li>Always validate player permissions before allowing actions</li>
+                            <li>Use server-side validation for all transactions</li>
+                            <li>Implement proper rate limiting and cooldowns</li>
+                            <li>Log all important actions for security auditing</li>
+                        </ul>
+                    </div>
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Data Management</h3>
+                        <ul>
+                            <li>Use proper database queries with error handling</li>
+                            <li>Implement data caching to reduce database load</li>
+                            <li>Clean up old data regularly to prevent bloat</li>
+                            <li>Backup important data before major changes</li>
+                        </ul>
+                    </div>
+                    <div class="practice-card">
+                        <div class="practice-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>Performance</h3>
+                        <ul>
+                            <li>Avoid expensive operations in loops</li>
+                            <li>Use appropriate wait times in threads</li>
+                            <li>Implement proper error handling to prevent crashes</li>
+                            <li>Monitor resource usage and optimize as needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

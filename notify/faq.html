@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Notify - FAQ</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Notify</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>FAQ</span>
+            </div>
+            <h1><i class="fas fa-bell"></i> Axion Notify - FAQ</h1>
+            <p>Frequently asked questions and troubleshooting for Axion Notify</p>
+        </div>
+    </section>
+
+    <!-- FAQ Content -->
+    <section class="faq-content">
+        <div class="container">
+            <!-- Search Box -->
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="faq-search" placeholder="Search FAQ...">
+                </div>
+            </div>
+
+            <!-- General Questions -->
+            <div class="faq-section">
+                <h2><i class="fas fa-question-circle"></i> General Questions</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What frameworks are supported?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Axion Notify supports the most popular FiveM frameworks:</p>
+                        <ul>
+                            <li><strong>ESX</strong> - Full compatibility with ESX framework</li>
+                            <li><strong>QBCore</strong> - Full compatibility with QBCore framework</li>
+                            <li><strong>Standalone</strong> - Can work without frameworks</li>
+                        </ul>
+                        <p>Simply configure the framework in your <code>config.lua</code> file:</p>
+                        <div class="code-block">
+                            <pre><code>Config.Framework = "esx" -- or "qb-core" or "standalone"</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Why aren't notifications appearing?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If notifications aren't appearing, check these issues:</p>
+                        <ul>
+                            <li><strong>Resource status</strong> - Ensure axion-notify is started without errors</li>
+                            <li><strong>UI files</strong> - Check if HTML/CSS/JS files are in the correct location</li>
+                            <li><strong>NUI permissions</strong> - Verify NUI is properly configured in fxmanifest.lua</li>
+                            <li><strong>Console errors</strong> - Check browser console (F12) for JavaScript errors</li>
+                            <li><strong>Position settings</strong> - Check if notifications are positioned off-screen</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I customize notification appearance?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To customize notification appearance:</p>
+                        <ol>
+                            <li><strong>Edit config.lua</strong> - Modify colors, icons, and durations</li>
+                            <li><strong>Customize CSS</strong> - Edit the HTML/CSS files for advanced styling</li>
+                            <li><strong>Add custom types</strong> - Create new notification types with custom properties</li>
+                            <li><strong>Modify animations</strong> - Adjust animation duration and effects</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="faq-section">
+                <h2><i class="fas fa-tools"></i> Troubleshooting</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Why are sounds not playing?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If notification sounds aren't playing:</p>
+                        <ul>
+                            <li><strong>Sound enabled</strong> - Check if <code>Config.SoundEnabled = true</code></li>
+                            <li><strong>Sound files</strong> - Ensure sound files exist in the correct location</li>
+                            <li><strong>Browser permissions</strong> - Check if browser allows audio playback</li>
+                            <li><strong>Volume settings</strong> - Verify game and browser volume levels</li>
+                            <li><strong>Sound format</strong> - Ensure sound files are in supported format</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I integrate with other scripts?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To integrate Axion Notify with other scripts:</p>
+                        <ul>
+                            <li><strong>Use exports</strong> - Call the notification functions from other resources</li>
+                            <li><strong>Override framework notifications</strong> - Replace ESX/QBCore notifications</li>
+                            <li><strong>Use events</strong> - Trigger notifications via events</li>
+                            <li><strong>Custom integration</strong> - Modify other scripts to use Axion Notify</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Performance issues</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If you're experiencing performance issues:</p>
+                        <ul>
+                            <li>Check for infinite loops in your custom code</li>
+                            <li>Verify wait times in threads are appropriate</li>
+                            <li>Monitor resource usage in the server console</li>
+                            <li>Optimize database queries and network calls</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="faq-section">
+                <h2><i class="fas fa-life-ring"></i> Getting Help</h2>
+                
+                <div class="support-options">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Documentation</h3>
+                        <p>Check the comprehensive documentation for detailed guides and examples.</p>
+                        <a href="usage.html" class="btn btn-outline">View Documentation</a>
+                    </div>
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3>Discord Support</h3>
+                        <p>Join our Discord server for real-time help and community support.</p>
+                        <a href="#" class="btn btn-outline">Join Discord</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

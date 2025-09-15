@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion Notify - Usage Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">Axion Notify</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Usage</span>
+            </div>
+            <h1><i class="fas fa-bell"></i> Axion Notify - Usage Guide</h1>
+            <p>Complete usage guide and API documentation for Axion Notify</p>
+        </div>
+    </section>
+
+    <!-- Usage Content -->
+    <section class="usage-content">
+        <div class="container">
+            <!-- Client-Side Usage -->
+            <div class="usage-section">
+                <h2><i class="fas fa-desktop"></i> Client-Side Usage</h2>
+                
+                <div class="api-examples">
+                    <div class="api-example">
+                        <h3>Basic Notification</h3>
+                        <div class="code-block">
+                            <pre><code>-- Simple notification
+exports['axion-notify']:notify('Hello World!', 'success', 5000)
+
+-- With different types
+exports['axion-notify']:notify('Something went wrong!', 'error', 3000)
+exports['axion-notify']:notify('Warning message', 'warning', 4000)
+exports['axion-notify']:notify('Information', 'info', 5000)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="api-example">
+                        <h3>Advanced Notification</h3>
+                        <div class="code-block">
+                            <pre><code>-- Advanced notification with custom title and icon
+exports['axion-notify']:notifyAdvanced(
+    'Custom Title',           -- Title
+    'This is a custom message', -- Message
+    'info',                   -- Type
+    5000,                     -- Duration
+    'fas fa-star'             -- Custom icon
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="api-example">
+                        <h3>Custom Notification</h3>
+                        <div class="code-block">
+                            <pre><code>-- Fully custom notification
+exports['axion-notify']:notifyCustom(
+    'Custom Title',
+    'Custom message with custom styling',
+    5000,
+    'fas fa-heart',
+    '#ff6b6b'  -- Custom color
+)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server-Side Usage -->
+            <div class="usage-section">
+                <h2><i class="fas fa-server"></i> Server-Side Usage</h2>
+                
+                <div class="api-examples">
+                    <div class="api-example">
+                        <h3>Notify Specific Player</h3>
+                        <div class="code-block">
+                            <pre><code>-- Basic server notification
+exports['axion-notify']:notifyPlayer(source, 'Welcome to the server!', 'info', 5000)
+
+-- Advanced server notification
+exports['axion-notify']:notifyPlayerAdvanced(source, {
+    title = 'Server Message',
+    message = 'This is a server notification',
+    type = 'success',
+    duration = 5000,
+    icon = 'fas fa-server'
+})</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="api-example">
+                        <h3>Notify All Players</h3>
+                        <div class="code-block">
+                            <pre><code>-- Notify all players
+exports['axion-notify']:notifyAll('Server restart in 5 minutes', 'warning', 10000)
+
+-- Advanced notification for all players
+exports['axion-notify']:notifyAllAdvanced({
+    title = 'Announcement',
+    message = 'Important server announcement',
+    type = 'info',
+    duration = 8000,
+    icon = 'fas fa-bullhorn'
+})</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Framework Integration -->
+            <div class="usage-section">
+                <h2><i class="fas fa-plug"></i> Framework Integration</h2>
+                
+                <div class="integration-examples">
+                    <div class="integration-example">
+                        <h3>ESX Integration</h3>
+                        <div class="code-block">
+                            <pre><code>-- ESX notifications will automatically use Axion Notify
+ESX.ShowNotification('This will use Axion Notify!', 'success', 5000)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="integration-example">
+                        <h3>QBCore Integration</h3>
+                        <div class="code-block">
+                            <pre><code>-- QBCore notifications will automatically use Axion Notify
+QBCore.Functions.Notify('This will use Axion Notify!', 'success', 5000)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Commands -->
+            <div class="usage-section">
+                <h2><i class="fas fa-terminal"></i> Test Commands</h2>
+                <div class="commands-grid">
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/testnotify success [message]</code>
+                            <span class="command-type">Client</span>
+                        </div>
+                        <p>Test a success notification</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/testnotify error [message]</code>
+                            <span class="command-type">Client</span>
+                        </div>
+                        <p>Test an error notification</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/notifyplayer [playerid] [message]</code>
+                            <span class="command-type">Server</span>
+                        </div>
+                        <p>Send a notification to a specific player</p>
+                    </div>
+                    <div class="command-card">
+                        <div class="command-header">
+                            <code>/notifyall [message]</code>
+                            <span class="command-type">Server</span>
+                        </div>
+                        <p>Send a notification to all players</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Axion Scripts</h3>
+                    <p>Professional FiveM resources for modern servers</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Scripts</h4>
+                    <ul>
+                        <li><a href="../index.html#scripts">Axion Black Market</a></li>
+                        <li><a href="../index.html#scripts">Axion Notify</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <ul>
+                        <li><a href="installation.html">Installation</a></li>
+                        <li><a href="usage.html">Usage</a></li>
+                        <li><a href="client.html">Client</a></li>
+                        <li><a href="server.html">Server</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="faq.html">Troubleshooting</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">GitHub Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Axion Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load component system -->
+    <script src="../components/component-loader.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>
